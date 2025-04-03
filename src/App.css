@@ -1,0 +1,57 @@
+.App {
+  text-align: center;
+}
+
+#name{
+  color: red;
+  text-align: left;
+
+  
+}
+
+
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: aqua;
+  font-size: large;
+
+}
+.list{
+  
+  align-items: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.tasks{
+  display: flex;
+  flex-direction: column;
+}
+.list button{
+  
+  margin-left: 20px;
+  text-align: center;
+
+
+}
+.age{
+  font-size: 42px;
+}
+.nav{
+  display: flex;
+  justify-content: space-evenly;
+  background-color: red;
+  width: 100%;
+}
+#profile,#back,#home{
+  background-color: rgba(0, 0, 0, 0.418);
+  color: white;
+  padding: 14px 25px;
+  text-decoration: none;
+  display: inline-block;
+}

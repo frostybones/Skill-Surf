@@ -8,9 +8,11 @@ import { Profile } from "./pages/profile";
 import { SkillSurf } from "./skillsurf.js";
 import { Signup } from "./skill surf/signup.js";
 import { Signin } from "./skill surf/signin.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 export const AppContext = createContext();
 
 function App() {
+  const client = new QueryClient();
   const users = [
     { name: "pedro ", age: 157 },
     { name: "joe ", age: 162 },
@@ -56,165 +58,167 @@ function App() {
     <AppContext.Provider value={{ green, setGreen, username, setUsername }}>
       <Router>
         <div className="App">
-          <nav className="nav">
-            <Link to="/home" id="home">
-              Home
-            </Link>
-            <Link to="/profile" id="profile">
-              profile
-            </Link>
-            <Link to="/" id="back">
-              Back
-            </Link>
-            <Link to="/skillsurf" id="skillsurf">
-              SkillSurf
-            </Link>
-          </nav>
-          <Routes>
-            <Route path="/skillsurf" element={<SkillSurf></SkillSurf>} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route
-              path="/"
-              element={
-                <div>
-                  <div className="header">
-                    <h1 id="name" style={{ color: green }}>
-                      Skill Surf
-                    </h1>
-                    <div className="excuse">
-                      <h1>generate an excuse</h1>
-                      <button
-                        onClick={() => {
-                          setExcuse(
-                            Axios.get(
-                              `https://excuser-three.vercel.app/v1/excuse/office`
-                            ).then((res) => {
-                              setExcuse(res.data[0].excuse);
-                            })
-                          );
-                        }}
-                      >
-                        office
-                      </button>
-                      <button
-                        onClick={() => {
-                          Axios.get(
-                            `https://excuser-three.vercel.app/v1/excuse/family`
-                          ).then((res) => {
-                            setExcuse(res.data[0].excuse);
-                          });
-                        }}
-                      >
-                        family
-                      </button>
-                      <button
-                        onClick={() => {
-                          setExcuse(
-                            Axios.get(
-                              `https://excuser-three.vercel.app/v1/excuse/party`
-                            ).then((res) => {
-                              setExcuse(res.data[0].excuse);
-                            })
-                          );
-                        }}
-                      >
-                        party
-                      </button>
-                    </div>
-
-                    <button
-                      className="butt1"
-                      onClick={() => {
-                        setGreen(green === "green" ? "red" : "green");
-                      }}
-                    >
-                      {green}
-                    </button>
-                    <div className="math">
-                      <button
-                        onClick={() => {
-                          setCount(count + 1);
-                        }}
-                      >
-                        increase
-                      </button>
-                      <button
-                        onClick={() => {
-                          setCount(count - 1);
-                        }}
-                      >
-                        decrease
-                      </button>
-                      <button
-                        onClick={() => {
-                          setCount(0);
-                        }}
-                      >
-                        reset
-                      </button>
-                    </div>
-                    <div className="task">
-                      <input onChange={handleChange}></input>
-                      <button onClick={addTask}>add tasks</button>
-                    </div>
-                    <div className="cats">
-                      <input
-                        onChange={(event) => {
-                          setName(event.target.value);
-                        }}
-                      />
-                      <button onClick={fetchData}>predict age</button>
-                    </div>
-                  </div>
-                  <h3>excuse:{excuse1}</h3>
-                  <p className="age">name: {predictedAge?.name}</p>
-                  <p className="age">predicted age: {predictedAge?.age}</p>
-                  <p className="age">count: {predictedAge?.count}</p>
-                  <h1 style={{ color: green }}>color</h1>
-                  <h1 style={{ color: green }}>
-                    <Job salary={1000} position="manager" company="amazon" />
-                  </h1>
-                  {users.map((user, key) =>
-                    user.age >= 18 ? (
-                      <h1 key="key">
-                        <User name={user.name} age={user.age} />
+          <QueryClientProvider client={client}>
+            <nav className="nav">
+              <Link to="/home" id="home">
+                Home
+              </Link>
+              <Link to="/profile" id="profile">
+                profile
+              </Link>
+              <Link to="/" id="back">
+                Back
+              </Link>
+              <Link to="/skillsurf" id="skillsurf">
+                SkillSurf
+              </Link>
+            </nav>
+            <Routes>
+              <Route path="/skillsurf" element={<SkillSurf></SkillSurf>} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/signin" element={<Signin />} />
+              <Route
+                path="/"
+                element={
+                  <div>
+                    <div className="header">
+                      <h1 id="name" style={{ color: green }}>
+                        Skill Surf
                       </h1>
-                    ) : (
-                      <h1></h1>
-                    )
-                  )}
-                  {count}
-                  <div className="app2">
-                    {todoList.map((task) => {
-                      return (
-                        <div className="list">
-                          <h1
-                            className="tasks"
-                            style={{
-                              backgroundColor:
-                                task.completed === true ? "green" : "",
-                            }}
-                          >
-                            {task.taskName}
-                          </h1>
-                          <button onClick={() => completeTask(task.id)}>
-                            complete
-                          </button>
-                          <button onClick={() => deleteTask(task.id)}>
-                            {" "}
-                            X
-                          </button>
-                        </div>
-                      );
-                    })}
+                      <div className="excuse">
+                        <h1>generate an excuse</h1>
+                        <button
+                          onClick={() => {
+                            setExcuse(
+                              Axios.get(
+                                `https://excuser-three.vercel.app/v1/excuse/office`
+                              ).then((res) => {
+                                setExcuse(res.data[0].excuse);
+                              })
+                            );
+                          }}
+                        >
+                          office
+                        </button>
+                        <button
+                          onClick={() => {
+                            Axios.get(
+                              `https://excuser-three.vercel.app/v1/excuse/family`
+                            ).then((res) => {
+                              setExcuse(res.data[0].excuse);
+                            });
+                          }}
+                        >
+                          family
+                        </button>
+                        <button
+                          onClick={() => {
+                            setExcuse(
+                              Axios.get(
+                                `https://excuser-three.vercel.app/v1/excuse/party`
+                              ).then((res) => {
+                                setExcuse(res.data[0].excuse);
+                              })
+                            );
+                          }}
+                        >
+                          party
+                        </button>
+                      </div>
+
+                      <button
+                        className="butt1"
+                        onClick={() => {
+                          setGreen(green === "green" ? "red" : "green");
+                        }}
+                      >
+                        {green}
+                      </button>
+                      <div className="math">
+                        <button
+                          onClick={() => {
+                            setCount(count + 1);
+                          }}
+                        >
+                          increase
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCount(count - 1);
+                          }}
+                        >
+                          decrease
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCount(0);
+                          }}
+                        >
+                          reset
+                        </button>
+                      </div>
+                      <div className="task">
+                        <input onChange={handleChange}></input>
+                        <button onClick={addTask}>add tasks</button>
+                      </div>
+                      <div className="cats">
+                        <input
+                          onChange={(event) => {
+                            setName(event.target.value);
+                          }}
+                        />
+                        <button onClick={fetchData}>predict age</button>
+                      </div>
+                    </div>
+                    <h3>excuse:{excuse1}</h3>
+                    <p className="age">name: {predictedAge?.name}</p>
+                    <p className="age">predicted age: {predictedAge?.age}</p>
+                    <p className="age">count: {predictedAge?.count}</p>
+                    <h1 style={{ color: green }}>color</h1>
+                    <h1 style={{ color: green }}>
+                      <Job salary={1000} position="manager" company="amazon" />
+                    </h1>
+                    {users.map((user, key) =>
+                      user.age >= 18 ? (
+                        <h1 key="key">
+                          <User name={user.name} age={user.age} />
+                        </h1>
+                      ) : (
+                        <h1></h1>
+                      )
+                    )}
+                    {count}
+                    <div className="app2">
+                      {todoList.map((task) => {
+                        return (
+                          <div className="list">
+                            <h1
+                              className="tasks"
+                              style={{
+                                backgroundColor:
+                                  task.completed === true ? "green" : "",
+                              }}
+                            >
+                              {task.taskName}
+                            </h1>
+                            <button onClick={() => completeTask(task.id)}>
+                              complete
+                            </button>
+                            <button onClick={() => deleteTask(task.id)}>
+                              {" "}
+                              X
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              }
-            />
-          </Routes>
+                }
+              />
+            </Routes>
+          </QueryClientProvider>
         </div>
       </Router>
     </AppContext.Provider>

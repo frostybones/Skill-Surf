@@ -34,12 +34,20 @@ export const Signup = () => {
                 Skill<span style={{ color: "seagreen" }}>Surf</span>
               </h1>
             </Link>
+            <h1>
+              <Link to="/signin" id="signin2">
+                Log In
+              </Link>
+            </h1>
           </div>
         </div>
 
         <div className="container">
           <div className="signupbox">
             <h1>create your account</h1>
+            <p>
+              Already have an account?<Link to="/signin">LogIn</Link>
+            </p>
             <div className="signupform">
               <b>username: </b>
               <input

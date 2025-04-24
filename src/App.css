@@ -60,7 +60,7 @@
   width: 100%;
   height: 70px;
   border-style: groove;
-  
+  border-radius: 10px;
   display: flex;
   
   
@@ -68,7 +68,7 @@
 #logo{
   position: absolute;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
-  margin-right:90% ;
+  margin-left:4% ;
   color: black;
 }
 #signup{
@@ -80,7 +80,8 @@
   margin: 15px;
   text-decoration: none;
   font-size: 30px;
-  margin-left: 91%;
+  margin-left: 90%;
+  border-radius: 10px;
 }
 #signin{
   color: black;
@@ -88,15 +89,11 @@
   text-decoration: none;
   padding: 2px;
   margin: 17px;
-  margin-left: 84%;
+  margin-left: 83%;
   font-size: 30px;
 
 }
-.header1{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .signupbox{
   width: 100%;
   max-width: 900px;
@@ -105,13 +102,9 @@
   box-shadow: box-shadow;
   border-style:ridge;
   overflow: hidden;
+  padding: 30px;
 }
-.signup{
-  background-color: white;
-  width: 90%;
-  max-width: 1200px;
-  margin: auto 0;
-}
+
 .container{
   flex: 1;
   display: flex;
@@ -123,4 +116,119 @@
   background-color: lightgray;
   width: 100%;
   height: 100%;
+}
+.header1{
+  background-color: lightgray;
+  display: flex;
+  justify-content: space-between;
+  align-items:normal;
+  width: 100%;
+  height: 20px;
+}
+#signin2{
+  color: black;
+  position: absolute;
+  text-decoration: none;
+  margin-left: 91%;
+  margin-top:  -6px; ;
+  border-style: solid;
+  color: seagreen;
+  border-color: seagreen;
+  border-radius: 10px;
+
+}
+.signin{
+  background-color: lightgray;
+  width: 100%;
+  height: 100%;
+}
+.signinbox{
+  width: 100%;
+  padding: 30px;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: box-shadow;
+  border-style:ridge;
+  overflow: hidden;}
+
+
+.hamburger-container {
+  position: relative;
+  z-index: 1001;
+}
+
+
+.hamburger {
+  width: 30px;
+  cursor: pointer;
+  padding: 20px;
+  z-index: 1002;
+  position: relative;
+  margin-left: -5%;
+  margin-top: 5%;
+
+}
+
+.bar {
+  width: 100%;
+  height: 4px;
+  background-color: #333;
+  margin: 5px 0;
+  transition: 0.3s ease;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100vh;
+  width: 250px;
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(78, 172, 66, 0.774);
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s ease;
+  z-index: 1001;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar a {
+  
+  padding: 16px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid seagreen;
+  
+}
+
+.sidebar a:hover {
+  background-color: #888686;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(211, 211, 211, 0.7); 
+  z-index: 1000;
+}
+.profilebox{
+  width: 500px;
+  height: 300px;
+  padding: 30px;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: box-shadow;
+  border-style:ridge;
+  overflow: hidden;
 }

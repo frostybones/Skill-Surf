@@ -8,6 +8,25 @@ export const Signin = () => {
             Skill<span style={{ color: "seagreen" }}>Surf</span>
           </h1>
         </Link>
+        <h1>
+          <Link to="/signup" id="signin2">
+            signup
+          </Link>
+        </h1>
+      </div>
+      <div className="container">
+        <div className="signinbox">
+          <h1>Log In</h1>
+          <div className="signinform">
+            <b>username: </b>
+            <input type="text" placeholder="username" />
+            <br />
+            <b>password: </b>
+            <input type="password" placeholder="password" />
+            <br />
+            <input type="submit" value="Log In" />
+          </div>
+        </div>
       </div>
     </div>
   );

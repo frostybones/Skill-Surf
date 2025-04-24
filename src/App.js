@@ -4,7 +4,7 @@ import { useEffect, useState, createContext } from "react";
 import Axios from "axios";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Home } from "./pages/home";
-import { Profile } from "./pages/profile";
+import { Profile } from "./skill surf/profile.js";
 import { SkillSurf } from "./skillsurf.js";
 import { Signup } from "./skill surf/signup.js";
 import { Signin } from "./skill surf/signin.js";
@@ -59,20 +59,6 @@ function App() {
       <Router>
         <div className="App">
           <QueryClientProvider client={client}>
-            <nav className="nav">
-              <Link to="/home" id="home">
-                Home
-              </Link>
-              <Link to="/profile" id="profile">
-                profile
-              </Link>
-              <Link to="/" id="back">
-                Back
-              </Link>
-              <Link to="/skillsurf" id="skillsurf">
-                SkillSurf
-              </Link>
-            </nav>
             <Routes>
               <Route path="/skillsurf" element={<SkillSurf></SkillSurf>} />
               <Route path="/home" element={<Home />} />

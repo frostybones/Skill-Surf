@@ -8,8 +8,28 @@
 
   
 }
+.googlebtn{
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: large;
+}
 
-
+.profile-image{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  padding: 3px;
+  margin: 15px;
+  text-decoration: none;
+  margin-left: 90%;
+  border-radius: 10px;
+  margin-top: -5px;
+}
 
 .header{
   display: flex;
@@ -80,7 +100,7 @@
   margin: 15px;
   text-decoration: none;
   font-size: 30px;
-  margin-left: 90%;
+  margin-left: 89%;
   border-radius: 10px;
 }
 #signin{

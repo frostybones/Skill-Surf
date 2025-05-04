@@ -4,8 +4,18 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PropTypes from "prop-types";
+import { auth, provider } from "../config/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+  const navigate = useNavigate();
+  const onGoogleSignIn = async () => {
+    const result = await signInWithPopup(auth, provider);
+    console.log(result);
+    navigate("/skillsurf");
+  };
+
   const onSubmit = () => {
     console.log("Form submitted");
   };
@@ -88,6 +98,16 @@ export const Signup = () => {
 
               <br />
               <input type="submit" value="create account" />
+            </div>
+            <br />
+            <div className="googlesignup">
+              <h3>or</h3>
+              <button className="googlebtn" onClick={onGoogleSignIn}>
+                <img
+                  src="https://img.icons8.com/color/48/000000/google-logo.png"
+                  alt="google logo"
+                />
+              </button>
             </div>
           </div>
         </div>

@@ -13,7 +13,7 @@ export const Signup = () => {
   const onGoogleSignIn = async () => {
     const result = await signInWithPopup(auth, provider);
     console.log(result);
-    navigate("/skillsurf");
+    navigate("/");
   };
 
   const onSubmit = () => {
@@ -39,7 +39,7 @@ export const Signup = () => {
       <div className="mainsignup">
         <div className="signup">
           <div className="header1">
-            <Link to="/skillsurf" id="logo">
+            <Link to="/" id="logo">
               <h1 id="logo">
                 Skill<span style={{ color: "seagreen" }}>Surf</span>
               </h1>

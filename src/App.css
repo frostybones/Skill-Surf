@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: lightgreen;
+  width: 101%;
 }
 
 #name{
@@ -98,6 +100,7 @@
   border-style: groove;
   border-radius: 10px;
   display: flex;
+  border-color: limegreen
   
   
 }
@@ -315,17 +318,19 @@
   flex-direction: row;
   width: 100%;
   margin-top: 3px;
-  height: 600px;
   border-style:groove;
   border-radius: 10px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
+  flex-wrap:wrap;
+  border-bottom: transparent;
+  gap:55px;
+  background-color:white;
   
 }
 .addservice{
+  margin-left: 50%;
+  position: absolute;
+  margin-top: 20px;
   
-  text-align: center;
   
   
 }
@@ -349,3 +354,40 @@
   width: 400px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
+.webservices{
+  display: flex;
+  flex-wrap:wrap;
+  flex-direction: row;
+  width: 100%;
+  border-color: seagreen;
+  border-bottom: transparent;
+  border-style:groove;
+  border-radius: 10px;
+  gap:55px;
+  background-color: white;
+  
+  
+}
+.service-card{
+  width: calc(20% );
+  height: 300px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: seagreen;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.search{
+  background-image: url('https://img.freepik.com/free-photo/top-view-ring-binder_23-2149569004.jpg?t=st=1746737132~exp=1746740732~hmac=6e5c5923763b2c7ad81874686d91387d51e07db543bb6798b79a027ea6348c82&w=996');
+  width: 50%;
+  height:400px;
+  margin-left: 25%;
+  border-radius: 10px;
+  align-items: center;
+  align-content: center;
+}
+

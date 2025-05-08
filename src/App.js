@@ -9,6 +9,7 @@ import { SkillSurf } from "./skillsurf.js";
 import { Signup } from "./skill surf/signup.js";
 import { Signin } from "./skill surf/signin.js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SearchResults } from "./skill surf/search.js";
 export const AppContext = createContext();
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
+              <Route path="/search" element={<SearchResults />} />
               <Route
                 path="/hello world"
                 element={

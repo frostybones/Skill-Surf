@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { Signup } from "./skill surf/signup";
 import { Signin } from "./skill surf/signin";
 import HamburgerMenu from "./components/hamburgermenu";
@@ -8,12 +14,23 @@ import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import { db } from "./config/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { navigate } from "react-router-dom";
+import { SearchResults } from "./skill surf/search";
 
 export const SkillSurf = () => {
   const [photoURL, setPhotoURL] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [services, setServices] = useState([]);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/search?query=${encodeURIComponent(search)}`);
+    }
+  };
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -102,20 +119,30 @@ export const SkillSurf = () => {
         <Link to="/profile">
           <img
             src={
-              user?.photoURL ||
-              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              user?.photoURL && user.photoURL !== "null"
+                ? user.photoURL
+                : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             className="profile-image"
-            alt=""
           />
         </Link>
       </div>
+      <form onSubmit={handleSearch} className="search">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search services..."
+          id="search-input"
+        />
+        <button type="submit">Search</button>
+      </form>
       <div className="webservices">
         {services.map((service) => (
-          <li key={service.id}>
-            <strong>{service.title}</strong> - {service.description} ($
+          <div key={service.id} className="service-card">
+            <strong>{service.title}</strong> <p>{service.Sdescription}</p> ($
             {service.price})
-          </li>
+          </div>
         ))}
       </div>
     </div>

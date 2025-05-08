@@ -11,6 +11,7 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  getDocs,
 } from "firebase/firestore";
 
 export const Profile = (props) => {
@@ -23,6 +24,9 @@ export const Profile = (props) => {
   const [title, setTitle] = useState("");
   const [Sdescription, setSDescription] = useState("");
   const [price, setPrice] = useState("");
+
+  const [services, setServices] = useState([]);
+  const [userServices, setUserServices] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -110,6 +114,33 @@ export const Profile = (props) => {
   };
 
   useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const servicesCollection = collection(db, "services");
+        const servicesSnapshot = await getDocs(servicesCollection); // <-- use getDocs
+        const servicesList = servicesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setServices(servicesList);
+
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const ownedServices = servicesList.filter(
+            (service) => service.userId === currentUser.uid
+          );
+          setUserServices(ownedServices);
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, [user]);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
@@ -149,7 +180,7 @@ export const Profile = (props) => {
           <HamburgerMenu />
         </div>
 
-        <Link to="/skillsurf" id="logo">
+        <Link to="/" id="logo">
           <h1 id="logo">
             Skill<span style={{ color: "seagreen" }}>Surf</span>
           </h1>
@@ -189,11 +220,31 @@ export const Profile = (props) => {
             </div>
           </div>
           <div className="services">
-            <div className="addservice">
-              <button onClick={() => setShowModal(true)}>+</button>
-              <p>Add service</p>
-            </div>
+            {user && userServices.length === 0 && (
+              <div className="addservice">
+                <button
+                  className="addservicebtn"
+                  onClick={() => setShowModal(true)}
+                >
+                  +
+                </button>
+                <h3>Add a Service</h3>
+              </div>
+            )}
+
+            {user && userServices.length > 0 ? (
+              <>
+                <h3>Your Services</h3>
+                {userServices.map((service) => (
+                  <div className="service-card" key={service.id}>
+                    <strong>{service.title}</strong> {service.Sdescription} ($
+                    {service.price})
+                  </div>
+                ))}
+              </>
+            ) : null}
           </div>
+
           {showModal && (
             <div className="modal-backdrop">
               <div className="modal">

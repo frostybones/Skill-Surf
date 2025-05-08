@@ -5,11 +5,45 @@ import HamburgerMenu from "./components/hamburgermenu";
 import { auth } from "./config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { signOut } from "firebase/auth";
+import { db } from "./config/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 export const SkillSurf = () => {
   const [photoURL, setPhotoURL] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [services, setServices] = useState([]);
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const servicesCollection = collection(db, "services");
+        const servicesSnapshot = await getDocs(servicesCollection);
+        const servicesList = servicesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setServices(servicesList);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -38,15 +72,51 @@ export const SkillSurf = () => {
         <h1 id="logo">
           Skill<span style={{ color: "seagreen" }}>Surf</span>
         </h1>
-        <Link to="/signup" id="signup">
-          Signup
+        {user && (
+          <button
+            id="logout-button"
+            onClick={() => {
+              signOut(auth)
+                .then(() => {
+                  console.log("User signed out");
+                })
+                .catch((error) => {
+                  console.error("Error signing out: ", error);
+                });
+            }}
+          >
+            Logout
+          </button>
+        )}
+        {!user && (
+          <>
+            <Link to="/signup" id="signup">
+              Signup
+            </Link>
+            <Link to="/signin" id="signin">
+              Log In
+            </Link>
+          </>
+        )}
+
+        <Link to="/profile">
+          <img
+            src={
+              user?.photoURL ||
+              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            }
+            className="profile-image"
+            alt=""
+          />
         </Link>
-        <Link to="/signin" id="signin">
-          Log In
-        </Link>
-        <Link to="/profile" id="profile">
-          <img src={photoURL} className="profile-image"></img>
-        </Link>
+      </div>
+      <div className="webservices">
+        {services.map((service) => (
+          <li key={service.id}>
+            <strong>{service.title}</strong> - {service.description} ($
+            {service.price})
+          </li>
+        ))}
       </div>
     </div>
   );

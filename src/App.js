@@ -60,13 +60,13 @@ function App() {
         <div className="App">
           <QueryClientProvider client={client}>
             <Routes>
-              <Route path="/skillsurf" element={<SkillSurf></SkillSurf>} />
+              <Route path="/" element={<SkillSurf></SkillSurf>} />
               <Route path="/home" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
               <Route
-                path="/"
+                path="/hello world"
                 element={
                   <div>
                     <div className="header">

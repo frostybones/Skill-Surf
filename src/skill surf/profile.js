@@ -24,7 +24,9 @@ export const Profile = (props) => {
   const [title, setTitle] = useState("");
   const [Sdescription, setSDescription] = useState("");
   const [price, setPrice] = useState("");
-
+  const [linkedIn, setLinkedIn] = useState("");
+  const [resumeURL, setResume] = useState("");
+  const [mediaURLs, setMedia] = useState([]);
   const [services, setServices] = useState([]);
   const [userServices, setUserServices] = useState([]);
   const navigate = useNavigate();
@@ -48,28 +50,65 @@ export const Profile = (props) => {
       console.error("Error adding service:", error);
     }
   };
+  const handleDescriptionChange = (e) => setDescription(e.target.value);
+  const handleLinkedInChange = (e) => setLinkedIn(e.target.value);
+  const handleResumeChange = (e) => setResume(e.target.value);
+  const handleMediaChange = (index, value) => {
+    const newMedia = [...mediaURLs];
+    newMedia[index] = value;
+    setMedia(newMedia);
+  };
+
+  const addMediaField = () => setMedia([...mediaURLs, ""]);
+  const removeMediaField = (index) => {
+    const newMedia = [...mediaURLs];
+    newMedia.splice(index, 1);
+    setMedia(newMedia);
+  };
+
+  const saveProfileExtras = async () => {
+    if (!linkedIn && !resumeURL && mediaURLs.every((url) => !url)) {
+      alert("Please fill in at least one field.");
+      return;
+    }
+
+    if (auth.currentUser) {
+      try {
+        await setDoc(
+          doc(db, "users", auth.currentUser.uid),
+          {
+            linkedIn,
+            resumeURL,
+            mediaURLs: mediaURLs.filter((url) => url !== ""),
+          },
+          { merge: true }
+        );
+        alert("Profile extras saved!");
+      } catch (error) {
+        console.error("Error saving profile extras:", error);
+        alert("Failed to save profile extras.");
+      }
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const fetchDescription = async () => {
-          const docRef = doc(db, "users", user.uid);
-          try {
-            const docSnap = await getDoc(docRef);
+        setUser(user);
+        const docRef = doc(db, "users", user.uid);
+        getDoc(docRef)
+          .then((docSnap) => {
             if (docSnap.exists()) {
-              setDescription(docSnap.data().description || "");
-              console.log("Fetched description:", docSnap.data().description);
-            } else {
-              console.log("No description found for this user.");
+              const data = docSnap.data();
+              setDescription(data.description || "");
+              setLinkedIn(data.linkedIn || "");
+              setResume(data.resumeURL || "");
+              setMedia(data.mediaURLs || [""]);
             }
-          } catch (error) {
-            console.error("Error fetching description:", error);
-          }
-        };
-        fetchDescription();
+          })
+          .catch((error) => console.error("Error fetching profile:", error));
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -93,10 +132,6 @@ export const Profile = (props) => {
     fetchDescription();
   }, []);
 
-  const handleDescriptionChange = (e) => {
-    console.log("Description updated:", e.target.value);
-    setDescription(e.target.value);
-  };
   const saveDescription = async () => {
     console.log("Save button clicked");
     if (auth.currentUser) {
@@ -117,7 +152,7 @@ export const Profile = (props) => {
     const fetchServices = async () => {
       try {
         const servicesCollection = collection(db, "services");
-        const servicesSnapshot = await getDocs(servicesCollection); // <-- use getDocs
+        const servicesSnapshot = await getDocs(servicesCollection);
         const servicesList = servicesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -219,6 +254,65 @@ export const Profile = (props) => {
               </button>
             </div>
           </div>
+          <div className="profile-extras">
+            <input
+              type="text"
+              placeholder="LinkedIn URL"
+              value={linkedIn}
+              onChange={handleLinkedInChange}
+            />
+            <input
+              type="text"
+              placeholder="Resume URL"
+              value={resumeURL}
+              onChange={handleResumeChange}
+            />
+            {mediaURLs.map((url, i) => (
+              <div key={i} className="media-url-input">
+                <input
+                  type="text"
+                  placeholder={`Media URL ${i + 1}`}
+                  value={url}
+                  onChange={(e) => handleMediaChange(i, e.target.value)}
+                />
+                {mediaURLs.length > 1 && (
+                  <button type="button" onClick={() => removeMediaField(i)}>
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={addMediaField}>
+              + Add Media URL
+            </button>
+            <button onClick={saveProfileExtras} className="save-button">
+              Save
+            </button>
+            {mediaURLs.filter((url) => url).length > 0 && (
+              <div className="media-preview">
+                <h3>Media Preview</h3>
+                <div className="media-grid">
+                  {mediaURLs.map((url, i) => (
+                    <div key={i} className="media-item">
+                      <img
+                        src={url}
+                        alt={`Media ${i + 1}`}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          const link = document.createElement("a");
+                          link.href = url;
+                          link.textContent = url;
+                          link.target = "_blank";
+                          e.target.parentNode.appendChild(link);
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="services">
             {user && userServices.length === 0 && (
               <div className="addservice">
@@ -234,7 +328,17 @@ export const Profile = (props) => {
 
             {user && userServices.length > 0 ? (
               <>
-                <h3>Your Services</h3>
+                <div className="service-header">
+                  <h1 style={{ color: "seagreen" }}>Your Services</h1>
+                  <div className="servicebtn">
+                    <button
+                      className="addservicebtn"
+                      onClick={() => setShowModal(true)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
                 {userServices.map((service) => (
                   <div className="service-card" key={service.id}>
                     <strong>{service.title}</strong> {service.Sdescription} ($

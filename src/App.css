@@ -270,6 +270,8 @@
   box-shadow: box-shadow;
   border-style:ridge;
   overflow: hidden;
+  margin-left: 100px;
+  border-color: seagreen;
 }
 .popup-overlay {
   position: fixed;
@@ -324,6 +326,7 @@
   border-bottom: transparent;
   gap:55px;
   background-color:white;
+  border-color: seagreen;
   
 }
 .addservice{
@@ -389,5 +392,21 @@
   border-radius: 10px;
   align-items: center;
   align-content: center;
+}
+.profile-extras{
+  width: 500px;
+  height: 300px;
+  padding: 30px;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: box-shadow;
+  border-style:ridge;
+  overflow: hidden;
+  margin-left: 800px;
+  margin-top: -365px;
+  margin-bottom: 20px;
+  border-color: seagreen;
+
 }
 
